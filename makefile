@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=
+CFLAGS=-g
 LIBS=-lpthread
 
 PROGRAM=test.out
@@ -7,7 +7,8 @@ PROGRAM=test.out
 OBJS=\
 	heap_globals.o \
 	checksum.o \
-	malloc.o
+	malloc.o \
+	free.o
 
 
 all: $(PROGRAM)
@@ -27,5 +28,5 @@ clean:
 
 # Run the program
 .PHONY: run
-run:
+run: $(PROGRAM)
 	./$(PROGRAM)

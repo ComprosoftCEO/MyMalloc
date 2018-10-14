@@ -65,7 +65,8 @@ void* malloc(size_t size) {
 	
 	//Make the size negative to indicate that this block is in use
 	block->size *= -1;
+	block->checksum = block_checksum(block);
 
 	unlock_heap();
-	return (void*) block+1;
+	return (void*) (block+1);
 }

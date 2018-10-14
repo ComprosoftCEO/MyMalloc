@@ -7,11 +7,11 @@
 
 
 
-typedef struct {
-	void* pre;				// Previous block in the list
-	void* next;				// Next block in the list
-	intptr_t size;			// Number of bytes in the block. If negative, then the block is in use
-	uintptr_t checksum;		// Make sure the block values are valid
+typedef struct Heap_Block {
+	struct Heap_Block* pre;		// Previous block in the list
+	struct Heap_Block* next;	// Next block in the list
+	intptr_t size;				// Number of bytes in the block. If negative, then the block is in use
+	uintptr_t checksum;			// Make sure the block values are valid
 } Heap_Block_t, *pHeap_Block_t;
 
 
