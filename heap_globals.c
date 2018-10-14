@@ -100,19 +100,32 @@ size_t increase_heap(size_t bytes_needed) {
 
 
 //
+// Create a new block in the heap
+//	Assumes that prev, next, offset and size are legit
+// 
+pHeap_Block_t create_block(pHeap_Block_t prev, pHeap_Block_t next, size_t offset, size_t size) {
+	
+	if (!prev) {prev = heap_start;}
+
+	//Configure the linked-list	
+	pHeap_Block_t new_block = NEXT_BLOCK(prev,offset);
+	new_block->pre = prev;
+	new_block->next = next;
+	prev->next = new_block;
+	if (next) {next->pre = new_block;}
+
+	new_block->size = size;
+	new_block->checksum = block_checksum(new_block);
+	return new_block;
+}
+
+
+
+//
 // Split one free block into two free blocks 
 //	Assumes block is free, new_size < block->size, and everything is aligned
 //
 void split_block(pHeap_Block_t block, size_t new_size) {
-
-	pHeap_Block_t new_block = NEXT_BLOCK(block,new_size);
-
-	//Sew up the linked list
-	new_block->pre = block;
-	new_block->next = block->next;
-	block->next = new_block;
-
-	//Calculate the split block sizes
-	new_block->size = (block->size - (new_size + BLOCK_LENGTH));
-	new_block->checksum = block_checksum(new_block);
+	create_block(block, block->next, new_size, block->size - (new_size + BLOCK_LENGTH));
+	block->size = new_size;
 }

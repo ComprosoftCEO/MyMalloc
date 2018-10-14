@@ -1,15 +1,21 @@
 #include "Heap.h"
-#include <unistd.h>			/* For sbrk */
 
+
+//
+// Allocate a chunk of memory on the heap
+//
 void* malloc(size_t size) {
 
 	//Figure out the size alignment (should be 8 bytes)
+	if (size == 0) {return NULL;}
 	size = NEXT_HEAP_ALIGN(size);
+
 
 	//Get the starting free block of the heap
 	pHeap_Block_t block = lock_heap();
 	if (!block) {return NULL;}
 	if (!valid_block(block)) {return (unlock_heap(), NULL);}
+
 
 	//Traverse the linked-list until a free block with enough space is discovered
 	while(block->size < size) {
@@ -48,17 +54,7 @@ void* malloc(size_t size) {
 
 		} else {
 			//Create a new block
-			pHeap_Block_t new_block = NEXT_BLOCK(block,block->size);
-			
-			//Configure the linked-list for the new block
-			block->next = new_block;
-			new_block->pre = block;
-			new_block->next = NULL;
-			
-			//Set up the size
-			new_block->size = added - BLOCK_LENGTH;
-			new_block->checksum = block_checksum(new_block);
-			block = new_block;
+			block = create_block(block,NULL,block->size,added-BLOCK_LENGTH);
 		}
 	}
 
@@ -66,6 +62,9 @@ void* malloc(size_t size) {
 	if (block->size > (size+BLOCK_LENGTH)) {
 		split_block(block,size);
 	}
+	
+	//Make the size negative to indicate that this block is in use
+	block->size *= -1;
 
 	unlock_heap();
 	return (void*) block+1;

@@ -51,6 +51,7 @@ void set_heap_start(pHeap_Block_t block);
 bool valid_block(pHeap_Block_t block);
 uintptr_t block_checksum(pHeap_Block_t block);
 size_t increase_heap(size_t bytes_needed);
+pHeap_Block_t create_block(pHeap_Block_t prev, pHeap_Block_t next, size_t offset, size_t size);
 void split_block(pHeap_Block_t block, size_t new_size);
 
 
