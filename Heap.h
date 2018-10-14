@@ -35,7 +35,7 @@ typedef struct Heap_Block {
 
 //Block Macros (only use with a raw pointer)
 #define PTR_BLOCK(x)       (((pHeap_Block_t) (x)) - 1)		// Get the block for a void* pointer
-#define BLOCK_SIZE(x)      (((x)->size < 0) : ((x)->size*(-1)) : ((x)->size))	// Number of bytes in the block
+#define BLOCK_SIZE(x)      (((x)->size < 0) ? ((x)->size*(-1)) : ((x)->size))	// Number of bytes in the block
 #define IS_FREE_BLOCK(x)   ((x)->size > 0)					// Test if a block is free
 #define IS_VALID_SBRK(x)   ((x) != ((void*) -1))			// Test if the pointer returned from sbrk is valid
 #define NEXT_BLOCK(x,size) ((pHeap_Block_t) (((uint8_t*) ((x)+1)) + size))

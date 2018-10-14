@@ -123,9 +123,12 @@ pHeap_Block_t create_block(pHeap_Block_t prev, pHeap_Block_t next, size_t offset
 
 //
 // Split one free block into two free blocks 
-//	Assumes block is free, new_size < block->size, and everything is aligned
+//	Assumes new_size < block->size, and everything is aligned
 //
 void split_block(pHeap_Block_t block, size_t new_size) {
-	create_block(block, block->next, new_size, block->size - (new_size + BLOCK_LENGTH));
-	block->size = new_size;
+	create_block(block, block->next, new_size, BLOCK_SIZE(block) - (new_size + BLOCK_LENGTH));
+
+	//Test for a negative size
+	if (block->size < 0) {block->size = -new_size;}
+	else {block->size = new_size;}
 }

@@ -9,6 +9,7 @@ OBJS=\
 	checksum.o \
 	malloc.o \
 	calloc.o \
+	realloc.o \
 	free.o
 
 
