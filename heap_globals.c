@@ -30,7 +30,6 @@ static bool init_heap(void) {
 	//Configure values inside starting block
 	heap_start->pre = heap_start->next = NULL;
 	heap_start->size = HEAP_START_SIZE;
-	heap_start->magic = HEAP_MAGIC;
 	heap_start->checksum = block_checksum(heap_start);
 	return true;
 }
@@ -82,7 +81,6 @@ void set_heap_start(pHeap_Block_t block) {
 //
 bool valid_block(pHeap_Block_t block) {
 	if (!block) {return false;}
-	if (block->magic != HEAP_MAGIC) {return false;}
 	if (block->checksum != block_checksum(block)) {return false;}
 	return true;
 }
@@ -116,6 +114,5 @@ void split_block(pHeap_Block_t block, size_t new_size) {
 
 	//Calculate the split block sizes
 	new_block->size = (block->size - (new_size + BLOCK_LENGTH));
-	new_block->magic = HEAP_MAGIC;
 	new_block->checksum = block_checksum(new_block);
 }

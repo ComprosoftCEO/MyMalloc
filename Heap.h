@@ -8,19 +8,15 @@
 
 
 typedef struct {
-	void* pre;			// Previous block in the list
-	void* next;			// Next block in the list
-	intptr_t size;		// Number of bytes in the block. If negative, then the block is in use
-
-//--- Flags ---//
-	uintptr_t magic    : sizeof(uintptr_t) / 2;		// Test if the data is actually a block
-	uintptr_t checksum : sizeof(uintptr_t) / 2;		// Make sure the block values are valid
+	void* pre;				// Previous block in the list
+	void* next;				// Next block in the list
+	intptr_t size;			// Number of bytes in the block. If negative, then the block is in use
+	uintptr_t checksum;		// Make sure the block values are valid
 } Heap_Block_t, *pHeap_Block_t;
 
 
 
 #define BLOCK_LENGTH  (sizeof(Heap_Block_t))		// 16 or 32 bytes in a block
-#define HEAP_MAGIC    ((uintptr_t) 0xFEEDBEEF)		// Fun magic word
 
 
 //Heap parameters
