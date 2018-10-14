@@ -8,6 +8,7 @@ OBJS=\
 	heap_globals.o \
 	checksum.o \
 	malloc.o \
+	calloc.o \
 	free.o
 
 
