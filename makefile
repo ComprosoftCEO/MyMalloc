@@ -7,6 +7,7 @@ PROGRAM=test.out
 OBJS=\
 	heap_globals.o \
 	checksum.o \
+	print.o \
 	malloc.o \
 	calloc.o \
 	realloc.o \

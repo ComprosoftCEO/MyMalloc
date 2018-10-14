@@ -66,15 +66,6 @@ void unlock_heap(void) {
 
 
 
-//
-// Set the starting free block for the heap
-//
-void set_heap_start(pHeap_Block_t block) {
-	//Test for NULL pointer
-	if (block) {heap_start = block;}
-}
-
-
 
 //
 // Validate a given block
