@@ -23,25 +23,50 @@ void* malloc(size_t size) {
 		// Go to the next block (if it exists)
 		if (block->next) {block = block->next; continue;}
 
-		//Okay, we are at the end of the list
+
+
+		//Okay, we are at the end of the heap, and there is no space left.
 		// So try to allocate more space on to the end of the heap
 		//
-		// Note: If this block is not free, then allocate a new block in the space
+		// Note: If this block is not free, then create a new block in the space
+		size_t toAdd;
 		if (IS_FREE_BLOCK(block)) {
-			if (!increase_heap(block,size - block->size)) {
-				return (unlock_heap(), NULL);
-			}
+			toAdd = size-block->size;
 		} else {
-			
+			toAdd = size+BLOCK_LENGTH;
 		}
+	
+		size_t added = increase_heap(toAdd);
+		if (!added) {return (unlock_heap(), NULL); /* Alloc Error */ }
 
+
+		//Do I need to create a new block, or resize the current block
+		if (IS_FREE_BLOCK(block)) {
+			//Resize the old block
+			block->size += added;
+			block->checksum = block_checksum(block);
+
+		} else {
+			//Create a new block
+			pHeap_Block_t new_block = NEXT_BLOCK(block,block->size);
+			
+			//Configure the linked-list for the new block
+			block->next = new_block;
+			new_block->pre = block;
+			new_block->next = NULL;
+			
+			//Set up the size
+			new_block->size = added - BLOCK_LENGTH;
+			new_block->checksum = block_checksum(new_block);
+			block = new_block;
+		}
 	}
 
 	//Figure out if I need to split this current block?
 	if (block->size > (size+BLOCK_LENGTH)) {
-		
-
+		split_block(block,size);
 	}
 
-
+	unlock_heap();
+	return (void*) block+1;
 }

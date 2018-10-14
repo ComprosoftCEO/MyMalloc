@@ -42,6 +42,7 @@ typedef struct {
 #define BLOCK_SIZE(x)      (((x)->size < 0) : ((x)->size*(-1)) : ((x)->size))	// Number of bytes in the block
 #define IS_FREE_BLOCK(x)   ((x)->size > 0)					// Test if a block is free
 #define IS_VALID_SBRK(x)   ((x) != ((void*) -1))			// Test if the pointer returned from sbrk is valid
+#define NEXT_BLOCK(x,size) ((pHeap_Block_t) (((uint8_t*) ((x)+1)) + size))
 
 
 pHeap_Block_t lock_heap(void);
@@ -53,7 +54,7 @@ void unlock_heap(void);
 void set_heap_start(pHeap_Block_t block);
 bool valid_block(pHeap_Block_t block);
 uintptr_t block_checksum(pHeap_Block_t block);
-bool increase_heap(pHeap_Block_t last_block, size_t bytes_needed);
+size_t increase_heap(size_t bytes_needed);
 void split_block(pHeap_Block_t block, size_t new_size);
 
 

@@ -89,32 +89,29 @@ bool valid_block(pHeap_Block_t block) {
 
 
 //
-// Add more bytes to the end of the heap
+// Add more bytes to the end of the heap (return bytes added)
 //
-bool increase_heap(pHeap_Block_t last_block, size_t bytes_needed) {
+size_t increase_heap(size_t bytes_needed) {
 
 	//Round up bytes_needed to the next heap increment
-	size_t toAdd = NEXT_HEAP_INC(bytes_needed);
-	if (!IS_VALID_SBRK(sbrk(toAdd))) {return false;}
-	
-	//Modify the size of the last heap block
-	last_block->size += toAdd;
-	last_block->checksum = block_checksum(block);
-	return true;
+	bytes_needed = NEXT_HEAP_INC(bytes_needed);
+	if (!IS_VALID_SBRK(sbrk(bytes_needed))) {return 0;}
+	return bytes_needed;
 }
 
 
 
 //
-// Split one free block into two free blocks
+// Split one free block into two free blocks 
+//	Assumes block is free, new_size < block->size, and everything is aligned
 //
 void split_block(pHeap_Block_t block, size_t new_size) {
 
-	pHeap_Block_t new_block = (((uint8_t*) block+1) + new_size);
+	pHeap_Block_t new_block = NEXT_BLOCK(block,new_size);
 
 	//Sew up the linked list
 	new_block->pre = block;
-	new_block->next = block->next
+	new_block->next = block->next;
 	block->next = new_block;
 
 	//Calculate the split block sizes
