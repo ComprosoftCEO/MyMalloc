@@ -16,9 +16,10 @@ OBJS=\
 
 all: $(PROGRAM)
 
-%.out: %.c $(OBJS)
-	$(CC) $(CFLAGS) -o $@ $^ $(LIBS)
+%.out: %.cpp $(OBJS)
+	g++ $(CFLAGS) -std=c++11 -o $@ $^ $(LIBS)
 
+.PRECIOUS: %.o
 %.o: %.c Heap.h
 	$(CC) -c $(CFLAGS) -o $@ $<
 

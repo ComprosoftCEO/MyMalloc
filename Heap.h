@@ -5,11 +5,6 @@
 #include <stdlib.h>		/* for malloc, free, realloc, calloc */
 #include <stdbool.h>
 
-//My function prototypes
-void* my_malloc(size_t size);
-void* my_calloc(size_t num, size_t size);
-void* my_realloc(void* ptr, size_t size);
-void my_free(void* ptr);
 
 
 typedef struct Heap_Block {
@@ -18,8 +13,6 @@ typedef struct Heap_Block {
 	intptr_t size;				// Number of bytes in the block. If negative, then the block is in use
 	uintptr_t checksum;			// Make sure the block values are valid
 } Heap_Block_t, *pHeap_Block_t;
-
-
 
 #define BLOCK_LENGTH  (sizeof(Heap_Block_t))		// 16 or 32 bytes in a block
 
@@ -46,6 +39,20 @@ typedef struct Heap_Block {
 #define NEXT_BLOCK(x,size) ((pHeap_Block_t) (((uint8_t*) ((x)+1)) + size))
 
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+
+
+//My function prototypes
+void* my_malloc(size_t size);
+void* my_calloc(size_t num, size_t size);
+void* my_realloc(void* ptr, size_t size);
+void my_free(void* ptr);
+
+
+
 pHeap_Block_t lock_heap(void);
 void unlock_heap(void);
 
@@ -63,5 +70,8 @@ void dump_heap(void);
 void print_heap_block(pHeap_Block_t block);
 void print_heap_entry(void* ptr);
 
+#ifdef __cplusplus
+}
+#endif
 
 #endif
