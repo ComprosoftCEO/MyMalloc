@@ -4,10 +4,10 @@
 //
 // Allocate a chunk of memory on the heap
 //
-void* malloc(size_t size) {
+void* my_malloc(size_t size) {
 
 	//Figure out the size alignment (should be 8 bytes)
-	if (size == 0) {return NULL;}
+	if (size <= 0) {return NULL;}
 	size = NEXT_HEAP_ALIGN(size);
 
 
@@ -18,7 +18,7 @@ void* malloc(size_t size) {
 
 
 	//Traverse the linked-list until a free block with enough space is discovered
-	while(block->size < size) {
+	while((!IS_FREE_BLOCK(block)) || (block->size < size)) {
 
 		//Make sure that this block is valid (to prevent heap corruption)
 		if (!valid_block(block)) {

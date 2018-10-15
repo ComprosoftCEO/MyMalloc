@@ -12,6 +12,8 @@ void dump_heap(void) {
 	do {
 		print_heap_entry(block+1);
 	} while (block = block->next);
+
+	unlock_heap();
 }
 
 
@@ -22,9 +24,9 @@ void print_heap_block(pHeap_Block_t block) {
 	
 	if (!block) {printf("Invalid Block!\n"); return;}
 
-	printf("%llx: Next: %llx\tPre: %llx\tSize: %lld\tChecksum:%llu",
+	printf("%-16p: Next: %-16p\tPre: %-16p\tSize: %-18lld\tChecksum:%llu",
 		block, block->next, block->pre,
-		(long long) block->size, (long long) block->checksum
+		(long long) block->size, (unsigned long long) block->checksum
 	);
 
 	if (!valid_block(block)) {printf("\t*INVALID*\n");}

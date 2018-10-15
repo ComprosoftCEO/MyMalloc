@@ -5,6 +5,11 @@
 #include <stdlib.h>		/* for malloc, free, realloc, calloc */
 #include <stdbool.h>
 
+//My function prototypes
+void* my_malloc(size_t size);
+void* my_calloc(size_t num, size_t size);
+void* my_realloc(void* ptr, size_t size);
+void my_free(void* ptr);
 
 
 typedef struct Heap_Block {

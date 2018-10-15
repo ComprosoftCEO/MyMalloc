@@ -5,9 +5,9 @@
 //
 // Reallocate the size of something stored in the heap
 //
-void* realloc(void* ptr, size_t size) {
+void* my_realloc(void* ptr, size_t size) {
 
-	if (!ptr) {return malloc(size);}
+	if (!ptr) {return my_malloc(size);}
 
 	lock_heap();
 
@@ -48,6 +48,10 @@ void* realloc(void* ptr, size_t size) {
 
 		//Resize the array
 		block->size = -total_size;
+
+		//Update the checksums
+		block->checksum = block_checksum(block);
+		if (end_block->next) {end_block->next->checksum = block_checksum(end_block->next);}
 		return (unlock_heap(), ptr);
 	}
 
@@ -55,13 +59,13 @@ void* realloc(void* ptr, size_t size) {
 
 	//No, we need to completely reallocate the buffer
 	unlock_heap();
-	void* new_buffer = malloc(size);
+	void* new_buffer = my_malloc(size);
 	if (!new_buffer) {return NULL;}
 
 	//Copy the data into the new buffer
 	memcpy(new_buffer,ptr,BLOCK_SIZE(block));
 	
 	//Release the old buffer
-	free(ptr);
+	my_free(ptr);
 	return new_buffer;	
 }

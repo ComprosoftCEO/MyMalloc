@@ -4,7 +4,7 @@
 //
 // Release a chunk of memory from the heap
 //
-void free(void* ptr) {
+void my_free(void* ptr) {
 
 	//Test for nullptr
 	if (!ptr) {return;}
@@ -29,7 +29,7 @@ void free(void* ptr) {
 		start_merge = start_merge->pre;
 	}
 
-	//Now find out the total number of consecutive free blocks, and the total lenght
+	//Now find out the total number of consecutive free blocks, and the total length
 	pHeap_Block_t end_merge = start_merge;
 	size_t total_size = start_merge->size;
 	while (end_merge->next) {
@@ -44,6 +44,10 @@ void free(void* ptr) {
 	start_merge->next = end_merge->next;
 	if (end_merge->next) {end_merge->next->pre = start_merge;}
 	start_merge->size = total_size;
+
+	//Update the list checksums
+	start_merge->checksum = block_checksum(start_merge);
+	if (end_merge->next) {end_merge->next->checksum = block_checksum(end_merge->next);}
 	
 	unlock_heap();
 }
