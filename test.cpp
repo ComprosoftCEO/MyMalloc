@@ -24,7 +24,9 @@ static bool dumpHeap(string args,map<string,void*>&);
 static bool listRegisters(string args,map<string,void*>&);
 
 
-
+//
+// Main testing utility
+//
 int main(void) {
 
 	cout << "Heap Testing Utility" << endl;
@@ -177,7 +179,7 @@ static bool reallocData(string args,map<string,void*>& regs) {
 	try {
 		void* ptr = regs.at(p.reg);
 		void* new_ptr = my_realloc(ptr,p.size);
-		if (!new_ptr) {cout << "Failed to reallocate register '" << p.reg << "' to size " << p.size << endl;}
+		if (!new_ptr) {cout << "Failed to reallocate register '" << p.reg << "' to size " << p.size << endl; return true;}
 	
 		regs[p.reg] = new_ptr;
 		printf("%s = %p\n",p.reg.c_str(),regs[p.reg]);

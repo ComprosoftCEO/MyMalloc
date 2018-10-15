@@ -21,7 +21,7 @@ void* my_realloc(void* ptr, size_t size) {
 
 	//See if the realloc is smaller (We might need to split it!)
 	//	Figure out if it is worth the space to split it
-	if ((size + BLOCK_LENGTH) < block->size) {
+	if ((size + BLOCK_LENGTH) < BLOCK_SIZE(block)) {
 		split_block(block,size);
 		return (unlock_heap(), ptr);
 	}
@@ -31,13 +31,13 @@ void* my_realloc(void* ptr, size_t size) {
 	if (BLOCK_SIZE(block) >= size) {return (unlock_heap(), ptr);}
 
 	//See if I can merge with possible free blocks in front of me
-	pHeap_Block_t end_block;
+	pHeap_Block_t end_block = block;
 	size_t total_size = BLOCK_SIZE(block);
 	while((end_block->next) && (total_size < size)) {
 		if (!valid_block(end_block->next)) {return (unlock_heap(), NULL); /* Heap Corruption */}
 		if (!IS_FREE_BLOCK(end_block->next)) {break;}
 		end_block = end_block->next;
-		total_size += (BLOCK_LENGTH + block->size);
+		total_size += (BLOCK_LENGTH + end_block->size);
 	}
 
 	//Yes, merge those blocks
@@ -52,6 +52,13 @@ void* my_realloc(void* ptr, size_t size) {
 		//Update the checksums
 		block->checksum = block_checksum(block);
 		if (end_block->next) {end_block->next->checksum = block_checksum(end_block->next);}
+
+		//The combined block might be too big
+		//	Figure out if it is worth the space to split it
+		if ((size + BLOCK_LENGTH) < BLOCK_SIZE(block)) {
+			split_block(block,size);
+		}
+
 		return (unlock_heap(), ptr);
 	}
 
