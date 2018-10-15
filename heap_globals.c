@@ -15,18 +15,17 @@ static pHeap_Block_t heap_start = 0;
 static bool init_heap(void) {
 
 	//Start of the heap
-	heap_start = (pHeap_Block_t) malloc(HEAP_START_SIZE + BLOCK_LENGTH); //sbrk(0);
-	if (!heap_start) {
-	//if (!IS_VALID_SBRK(heap_start)) {
+	heap_start = (pHeap_Block_t) sbrk(0);
+	if (!IS_VALID_SBRK(heap_start)) {
 		heap_start = 0;
 		return false;
 	}
 
 	//Increase the heap size to the starting size
 	//	Size = START_SIZE + BLOCK_LENGTH
-	//if (!IS_VALID_SBRK(
-	//		sbrk(HEAP_START_SIZE + BLOCK_LENGTH)
-	//	)) {return false;}
+	if (!IS_VALID_SBRK(
+			sbrk(HEAP_START_SIZE + BLOCK_LENGTH)
+	)) {return false;}
 
 	//Configure values inside starting block
 	heap_start->pre = heap_start->next = NULL;
@@ -86,10 +85,7 @@ size_t increase_heap(size_t bytes_needed) {
 	//Round up bytes_needed to the next heap increment
 	bytes_needed = NEXT_HEAP_INC(bytes_needed);
 
-	void* new_ptr = realloc(heap_start,bytes_needed);
-	if (!new_ptr) {return 0;}
-	
-	//if (!IS_VALID_SBRK(sbrk(bytes_needed))) {return 0;}
+	if (!IS_VALID_SBRK(sbrk(bytes_needed))) {return 0;}
 	return bytes_needed;
 }
 

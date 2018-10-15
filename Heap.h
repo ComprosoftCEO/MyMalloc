@@ -6,13 +6,15 @@
 #include <stdbool.h>
 
 
-
+//Define the heap metadata structure
 typedef struct Heap_Block {
 	struct Heap_Block* pre;		// Previous block in the list
 	struct Heap_Block* next;	// Next block in the list
 	intptr_t size;				// Number of bytes in the block. If negative, then the block is in use
 	uintptr_t checksum;			// Make sure the block values are valid
 } Heap_Block_t, *pHeap_Block_t;
+
+
 
 #define BLOCK_LENGTH  (sizeof(Heap_Block_t))		// 16 or 32 bytes in a block
 
@@ -44,18 +46,9 @@ extern "C" {
 #endif
 
 
-
-//My function prototypes
-void* my_malloc(size_t size);
-void* my_calloc(size_t num, size_t size);
-void* my_realloc(void* ptr, size_t size);
-void my_free(void* ptr);
-
-
-
+//Use a mutex to guarantee thread safety
 pHeap_Block_t lock_heap(void);
 void unlock_heap(void);
-
 
 
 //Only call these methods AFTER the heap is locked by the current thread

@@ -147,7 +147,7 @@ static bool mallocData(string args, map<string,void*>& regs) {
 		regs.at(p.reg);
 		cout << "Register '" << p.reg << "' is already allocated" << endl;
 	} catch (...) {
-		regs[p.reg] = my_malloc(p.size);
+		regs[p.reg] = malloc(p.size);
 		printf("%s = %p\n",p.reg.c_str(),regs[p.reg]);
 	}
 	return true;
@@ -164,7 +164,7 @@ static bool callocData(string args,map<string,void*>& regs) {
 		regs.at(p.reg);
 		cout << "Register '" << p.reg << "' is already allocated" << endl;
 	} catch (...) {
-		regs[p.reg] = my_calloc(1,p.size);
+		regs[p.reg] = calloc(1,p.size);
 		printf("%s = %p\n",p.reg.c_str(),regs[p.reg]);
 	}
 	return true;
@@ -180,7 +180,7 @@ static bool reallocData(string args,map<string,void*>& regs) {
 
 	try {
 		void* ptr = regs.at(p.reg);
-		void* new_ptr = my_realloc(ptr,p.size);
+		void* new_ptr = realloc(ptr,p.size);
 		if (!new_ptr) {cout << "Failed to reallocate register '" << p.reg << "' to size " << p.size << endl; return true;}
 	
 		regs[p.reg] = new_ptr;
@@ -203,7 +203,7 @@ static bool freeData(string args,map<string,void*>& regs) {
 
 	try {
 		void* ptr = regs.at(reg);
-		my_free(ptr);
+		free(ptr);
 		regs.erase(reg);
 		cout << "Freed register '" << reg << "'" << endl;
 	} catch (...) {

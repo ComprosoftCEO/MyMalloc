@@ -4,7 +4,7 @@
 //
 // Allocate a chunk of memory on the heap
 //
-void* my_malloc(size_t size) {
+void* malloc(size_t size) {
 
 	//Figure out the size alignment (should be 8 bytes)
 	if (size <= 0) {return NULL;}

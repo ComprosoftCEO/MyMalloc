@@ -4,7 +4,7 @@
 //
 // Release a chunk of memory from the heap
 //
-void my_free(void* ptr) {
+void free(void* ptr) {
 
 	//Test for nullptr
 	if (!ptr) {return;}
