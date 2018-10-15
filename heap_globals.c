@@ -101,13 +101,12 @@ size_t increase_heap(size_t bytes_needed) {
 // 
 pHeap_Block_t create_block(pHeap_Block_t prev, pHeap_Block_t next, size_t offset, size_t size) {
 	
-	if (!prev) {prev = heap_start;}
 
 	//Configure the linked-list
 	pHeap_Block_t new_block = NEXT_BLOCK(prev,offset);
 	new_block->pre = prev;
 	new_block->next = next;
-	prev->next = new_block;
+	if (prev) {prev->next = new_block;}
 	if (next) {next->pre = new_block;}
 
 	//Update the size

@@ -29,6 +29,8 @@ static bool listRegisters(string args,map<string,void*>&);
 //
 int main(void) {
 
+	//void* ptr = my_malloc(999999);
+
 	cout << "Heap Testing Utility" << endl;
 	cout << "--------------------" << endl;
 	cout << "Type 'h' for list of commands" << endl;

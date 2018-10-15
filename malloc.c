@@ -54,7 +54,7 @@ void* my_malloc(size_t size) {
 
 		} else {
 			//Create a new block
-			block = create_block(block,NULL,block->size,added-BLOCK_LENGTH);
+			block = create_block(block,NULL,BLOCK_SIZE(block),added-BLOCK_LENGTH);
 		}
 	}
 
