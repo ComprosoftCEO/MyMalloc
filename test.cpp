@@ -29,8 +29,6 @@ static bool listRegisters(string args,map<string,void*>&);
 //
 int main(void) {
 
-	//void* ptr = my_malloc(999999);
-
 	cout << "Heap Testing Utility" << endl;
 	cout << "--------------------" << endl;
 	cout << "Type 'h' for list of commands" << endl;
@@ -83,25 +81,6 @@ static string getCommand(string prompt) {
 }
 
 
-
-//
-// Show the help menu
-//
-static bool showHelp(string args,map<string,void*>& regs) {
-	cout << "  h - Show the help screen" << endl;
-	cout << "  q - Quit the program" << endl << endl;
-	cout << "  m <reg> <bytes> - Malloc <bytes> into <reg>" << endl;
-	cout << "  c <reg> <bytes> - Calloc <bytes> into <reg>" << endl;
-	cout << "  r <reg> <bytes> - Realloc <reg> to <bytes>" << endl;
-	cout << "  f <reg> - Free <reg>" << endl << endl;
-	cout << "  a <reg> - Print out address of <reg>" << endl;
-	cout << "  p <reg> - Print out heap info of <reg>" << endl;
-	cout << "  d - Dump the contents of the heap" << endl;
-	cout << "  l - List all registers" << endl;
-	return true;
-}
-
-
 //
 // Parse <reg> <size> arguments
 //
@@ -126,6 +105,11 @@ static Parsed parseAllocArgs(const string& args) {
 	return Parsed(reg,size);
 }
 
+
+
+//
+// Parse <reg> arguments
+//
 static string parseRegArgs(const string& args) {
 	stringstream ss(args);
 	string reg;
@@ -134,6 +118,28 @@ static string parseRegArgs(const string& args) {
 	if (reg == "") {cout << "Please specify a register" << endl;}
 	return reg;
 }
+
+
+
+
+//
+// Show the help menu
+//
+static bool showHelp(string args,map<string,void*>& regs) {
+	cout << "  h - Show the help screen" << endl;
+	cout << "  q - Quit the program" << endl << endl;
+	cout << "  m <reg> <bytes> - Malloc <bytes> into <reg>" << endl;
+	cout << "  c <reg> <bytes> - Calloc <bytes> into <reg>" << endl;
+	cout << "  r <reg> <bytes> - Realloc <reg> to <bytes>" << endl;
+	cout << "  f <reg> - Free <reg>" << endl << endl;
+	cout << "  a <reg> - Print out address of <reg>" << endl;
+	cout << "  p <reg> - Print out heap info of <reg>" << endl;
+	cout << "  d - Dump the contents of the heap" << endl;
+	cout << "  l - List all registers" << endl;
+	return true;
+}
+
+
 
 
 //
