@@ -24,6 +24,7 @@ The code is written for a Linux operating system, but can run on Windows using t
 * __malloc.c, calloc.c, realloc.c, free.c__ - Function definitions for `malloc()`, `calloc()`, `realloc()`, and `free()` (as defined in _stdlib.h_)
 * __checksum.c__ - Algorithm for computing the heap block checksum
 * __heap_globals.c__ - Stores both global variables and functions used by all code files
+* __print.c (optional)__ - Functions for printing out blocks in the heap (useful for debugging)
 
 <br>
 
