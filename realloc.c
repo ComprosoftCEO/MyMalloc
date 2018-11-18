@@ -14,8 +14,10 @@ void* realloc(void* ptr, size_t size) {
 	pHeap_Block_t block = PTR_BLOCK(ptr);
 	if (!valid_block) {return (unlock_heap(), NULL); /* HEAP Corruption */ }	
 
+	//Size of 0 frees the block
+	if (size == 0) {free(ptr); return NULL;}
+
 	//Figure out the size alignment (should be 8 bytes)
-	if (size == 0) {return NULL;}
 	size = NEXT_HEAP_ALIGN(size);
 
 
