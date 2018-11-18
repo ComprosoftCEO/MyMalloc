@@ -20,6 +20,7 @@ I wrote this code for my CS-240 class at IUPUI for the project "Heap of Students
 The code is written for a Linux operating system, but can run on Windows using the [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install-win10) (which is actually what I used to write and test the code). The provided makefile is used for building the [Testing Utility](#testing-utility) (_see below_), which was used to test the function calls during development. To use the code in other projects, merely include the [Code Files](#code-files) (_listed below_) in your project. Due to the way that linking works, these versions of `malloc()`, `calloc()`, `realloc()`, and `free()` will automatically replace the default versions in libc.
 
 ## Code Files
+* __Heap.h__ - Contains the definition of a Heap Block structure, internal functions, debug functions, and other useful macros  
 * __malloc.c, calloc.c, realloc.c, free.c__ - Function definitions for `malloc()`, `calloc()`, `realloc()`, and `free()` (as defined in _stdlib.h_)
 * __checksum.c__ - Algorithm for computing the heap block checksum
 * __heap_globals.c__ - Stores both global variables and functions used by all code files
